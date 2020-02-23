@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Blinker',{  // 节点的类型必须和上面注册的类型匹配 RED.nodes.registerType
+        category: 'Blinker',   // 节点调色板的类别
+        color: '#a6bbcf',       // 使用的背景颜色
+		label () {
+			return this.name || 'Blinker'
+		},
+        defaults: {           // 节点可编辑的属性
+            SecretKey: {value:""}
+        },
+        inputs:1,         // 节点有多少输入  0 或者 1
+        outputs:1,       // 节点有多少输出  0 或者更多
+        icon: "file.png", // 要使用的图标
+        label: function() { // 工作空间中要使用的标签
+            return this.name||"Blinker";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="Blinker">   <!--date-template-name   编辑模板，用户定义节点的编辑对话框内容，值对节点类型进行绑定 和上面的registerType 中类型进行匹配-->
+    <div class="form-row">
+        <label for="node-input-SecretKey"><i class="icon-tag"></i>SecretKey</label> <!--node-input 后面的名字和defaults 中的名字相同-->
+        <input type="text" id="node-input-SecretKey" placeholder="BlinkerAPP中的设备密钥"><!--id 值和for 中的值相同-->
+    </div>
+	<p><img src="https://s2.ax1x.com/2020/02/20/3enRGd.md.jpg"/></p>
+	<div class="form-row">
+        <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+          <a href="https://bbs.iobroker.cn" target="_blank">Design By suwill</a>
+        </label>
+      </div>
+</script>
+
+<script type="text/x-red" data-help-name="Blinker">   <!--对应的帮助文档-->
+    <p>接入BlinkerAPP中的设备到Node-RED</p>   <!--节点的提示信息-->
+</script>
