@@ -13,7 +13,7 @@
 			"blinker-mqtt": "blinker-mqtt.js"
 		}
 	},"keywords": [
-		"blinker"
+		"blinker","node-red"
 	],
 	"repository": {
 		"type": "git",

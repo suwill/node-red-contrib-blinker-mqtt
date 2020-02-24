@@ -1,8 +1,4 @@
 module.exports = function(RED) { // RED  可以对node-red 进行访问
-	var msg = {
-		payload: ""
-	}
-
 	function Blinker(config) {
 		RED.nodes.createNode(this, config); // 节点本身就会对调用该函数，包括节点输入的属性
 		const node = this;
@@ -34,7 +30,7 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 					var data = JSON.parse(buff);
 					if (data['detail'] == 'device not found') {
 						console.log('Please make sure you have put in the right AuthKey!');
-						node.warn('没有找到设备,AuthKey错误?')
+						// node.warn('没有找到设备,AuthKey错误?')
 						node.status({
 							text: `没有找到设备,AuthKey错误?`,
 							fill: 'red',
