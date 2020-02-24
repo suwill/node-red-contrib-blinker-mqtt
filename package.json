@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-blinker-mqtt",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "接入BlinkerAPP中的设备到Node-RED",
 	"main": "index.js",
 	"scripts": {
