@@ -1,35 +1,82 @@
 <script type="text/javascript">
-    RED.nodes.registerType('Blinker',{  // 节点的类型必须和上面注册的类型匹配 RED.nodes.registerType
-        category: 'Blinker',   // 节点调色板的类别
-        color: '#a6bbcf',       // 使用的背景颜色
-		label () {
+	RED.nodes.registerType('Blinker', { // 节点的类型必须和上面注册的类型匹配 RED.nodes.registerType
+		category: 'Blinker', // 节点调色板的类别
+		color: '#a6bbcf', // 使用的背景颜色
+		label() {
 			return this.name || 'Blinker'
 		},
-        defaults: {           // 节点可编辑的属性
-            SecretKey: {value:""}
-        },
-        inputs:1,         // 节点有多少输入  0 或者 1
-        outputs:1,       // 节点有多少输出  0 或者更多
-        icon: "file.png", // 要使用的图标
-        label: function() { // 工作空间中要使用的标签
-            return this.name||"Blinker";
-        }
-    });
+		defaults: { // 节点可编辑的属性
+			SecretKey: {
+				value: "",
+				required: true
+			},
+			DeviceType: {
+				value: "",
+				required: true
+			}
+		},
+		inputs: 2, // 节点有多少输入  0 或者 1
+		outputs: 1, // 节点有多少输出  0 或者更多
+		icon: "file.png", // 要使用的图标
+		label: function() { // 工作空间中要使用的标签
+			return this.name || "Blinker";
+		}
+	});
 </script>
 
-<script type="text/x-red" data-template-name="Blinker">   <!--date-template-name   编辑模板，用户定义节点的编辑对话框内容，值对节点类型进行绑定 和上面的registerType 中类型进行匹配-->
+<script type="text/x-red" data-template-name="Blinker">
+	<!--date-template-name   编辑模板，用户定义节点的编辑对话框内容，值对节点类型进行绑定 和上面的registerType 中类型进行匹配-->
     <div class="form-row">
-        <label for="node-input-SecretKey"><i class="icon-tag"></i>SecretKey</label> <!--node-input 后面的名字和defaults 中的名字相同-->
+        <label for="node-input-SecretKey"><i class="icon-tag"></i>SecretKey:</label> <!--node-input 后面的名字和defaults 中的名字相同-->
         <input type="text" id="node-input-SecretKey" placeholder="BlinkerAPP中的设备密钥"><!--id 值和for 中的值相同-->
     </div>
+	<div class="form-row">
+	    <label for="node-input-DeviceType">DeviceType:</label>
+	    <select type="text" id="node-input-DeviceType" style="width:70%;">
+			<option value="">请选择设备类型</option>
+	        <option value="multi_outlet">米家：4孔插排</option>
+	        <option value="light">米家：灯(含RGB)</option>
+	        <option value="outlet">米家：电源类</option>
+	        <option value="sensor">米家：传感器类</option>
+	        <option value="other">非米家设备</option>
+	    </select>
+	</div>
 	<p><img src="https://s2.ax1x.com/2020/02/20/3enRGd.md.jpg"/></p>
 	<div class="form-row">
-        <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+       <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
           <a href="https://bbs.iobroker.cn" target="_blank">Design By suwill</a>
         </label>
       </div>
 </script>
 
-<script type="text/x-red" data-help-name="Blinker">   <!--对应的帮助文档-->
-    <p>接入BlinkerAPP中的设备到Node-RED</p>   <!--节点的提示信息-->
+<script type="text/x-red" data-help-name="Blinker">
+	<!--对应的帮助文档-->
+    <p>　　接入BlinkerAPP中的设备到Node-RED</p>
+	<h3>节点配置：</h3>
+	<dl class="message-properties">
+	    <dt>SecretKey
+	        <span class="property-type">string</span>
+	    </dt>
+	    <dd>Blinker官方APP中虚拟设备的key</dd>
+	    <dt>DeviceType
+	      <span class="property-type">string</span>
+	    </dt>
+	    <dd>设备类型,目前只分了米家和非米家设备</dd>
+	</dl>
+	<h3>输入</h3>
+	<p>　　在消息处理节点中加入"msg.sendMqtt=true;"标识，可以将msg.payload中的数据(JSON对象)发布到当前MQTT</p>
+	<h3>输出</h3>
+	<p>　　除了设备心跳包之外的mqtt信息一律输出到msg.payload</p>
+	<p>　　本节点使用了名为："MIOT-Device"的共享存储，米家的心跳包发来什么怼回去什么</p>
+	<p>　　其他的业务逻辑请亲们自己编写流</p>
+	<h3>致谢(排名不分先后)</h3>
+	<p>　trust<br/>
+	　奈何col<br/>
+	　花神<br/>
+	　三木<br/>
+	　三水<br/>
+	　实验幼儿园小二班扛把子<br/>
+	</p>
+	
+	<p>　源码地址:<a href="https://github.com/suwill/node-red-contrib-blinker-mqtt">github.com/suwill</a></p>
 </script>

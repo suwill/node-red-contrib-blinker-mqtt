@@ -14,7 +14,12 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 
 		function getBlinkerDeviceInfo(auth, callback) {
 			let host = 'https://iotdev.clz.me';
-			let url = '/api/v1/user/device/diy/auth?authKey=' + auth + '&miType=multi_outlet&version=1.2.2';
+			let url='';
+			if (config.DeviceType!='other') {
+				url = '/api/v1/user/device/diy/auth?authKey=' + auth + '&miType='+config.DeviceType+'&version=1.2.2';
+			} else{
+				url = '/api/v1/user/device/diy/auth?authKey=' + auth;
+			}
 			let https = require('https');
 			https.get(host + url, function(res) {
 				let datas = [];
@@ -85,7 +90,8 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 							console.log('pubtopic: ', mProto._pubtopic);
 							console.log('-----------------------------------------------------------------')
 						}
-						node.send([mProto, null])
+						node.send({payload:mProto})
+						node.send({payload:"NodeRed<-Blinker->MQTT OK~"})
 						callback(mProto)
 					}
 				})
@@ -168,8 +174,7 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 								"deviceType": "vAssistant"
 							}));
 							console.log('//////////--------------米家设备:非心跳包', data)
-							msg.payload = JSON.parse(data)
-							node.send(msg)
+							node.send({payload:JSON.parse(data)})
 						}
 						break;
 					default:
@@ -194,8 +199,7 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 								break;
 							default:
 								console.log('//////////--------------非米家设备:非心跳包', data)
-								msg.payload = JSON.parse(data)
-								node.send(msg)
+								node.send({payload:JSON.parse(data)})
 								break;
 						}
 						break;
@@ -208,8 +212,12 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 			node.on('input', msg => {
 				console.log('INPUT---------', msg.sendMqtt)
 				if (msg.sendMqtt) {
-					console.log(mProto)
-					console.log(msg.payload)
+					console.log(mProto);
+					console.log(msg.payload);
+					mProto._flag="SendToBlinkerMqtt";
+					node.send({payload:mProto});
+					delete mProto._flag;
+					node.send(msg);
 					client.publish(mProto._pubtopic, JSON.stringify(msg.payload));
 				}
 			})
