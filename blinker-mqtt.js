@@ -155,9 +155,9 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 							// }));
 							// console.log('不知道干没干')
 						} else if (get_msg.data.hasOwnProperty('set')) {
-							console.log('<-|操控指令包:', data)
+							console.log('MQTT:<-|操控指令包:', data)
 							// {"set":{"pState":true,"num":"1"}}
-							console.log(JSON.parse(data).set)
+							// console.log(JSON.parse(data).set)
 							//原样怼回去了
 							if (config.autoRes) {
 								let in_parm = JSON.stringify(JSON.parse(data).set);
@@ -252,7 +252,7 @@ module.exports = function(RED) { // RED  可以对node-red 进行访问
 					}
 					node.send({payload:send_msg})
 					client.publish(mqtt._pubtopic, JSON.stringify(send_msg));
-					console.log('MQTT:->|', send_msg);
+					console.log('MQTT:->|', JSON.stringify(send_msg));
 				} else{
 					node.status({
 						text: '因msg.send==undefined而未发布',
